@@ -4,7 +4,8 @@
     "moduleResolution": "NodeNext",
     "target": "es2020",
     "sourceMap": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "skipLibCheck": true // due to cheerio's type definitions, to be fixed in 1.0.0
   },
   "include": ["src/**/*"]
 }
