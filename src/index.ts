@@ -12,11 +12,54 @@ async function scrape(url: string) {
   return cheerio.load(html);
 }
 
-/* const $ = cheerio.load(html);
-console.log('started scraping');
-console.log(html);
-$('.recent_game_content .game_info .game_name a').each((index, el) =>
-  console.log($(el).text())
-); */
+const SELECTORS: {
+  [key: string]: { selector: string; type: string; attribute?: string };
+} = {
+  username: {
+    selector: '.actual_persona_name',
+    type: 'string',
+  },
+  level: {
+    selector: '.persona_level .friendPlayerLevelNum',
+    type: 'number',
+  },
+};
+
+const SPECIAL_SELECTORS = {
+  avatar: '.playerAvatarAutoSizeInner > img',
+  yearsOfService: '.badge_icon',
+};
+
+function getYearsOfService() {
+  const badgeSrc = $(SPECIAL_SELECTORS.yearsOfService).attr('src');
+  const regex = /(?:steamyears)([0-9]+)/;
+  const match = badgeSrc.match(regex);
+  return match ? Number(badgeSrc.match(regex)[1]) : null;
+}
+
+function getAvatar() {
+  return $(SPECIAL_SELECTORS.avatar).attr('src');
+}
+
+const userSelectorEntries = Object.entries(SELECTORS);
+
+const $ = await scrape(getUserUrl('vgmestre'));
+
+console.log('scraping..');
+
+const entries = userSelectorEntries.map(([key, { selector, type }]) => {
+  const rawValue = $(selector).text();
+  const value = type === 'number' ? Number(rawValue) : rawValue;
+
+  return [key, value];
+});
+
+console.log(
+  Object.fromEntries([
+    ...entries,
+    ['yearsOfService', getYearsOfService()],
+    ['avatar', getAvatar()],
+  ])
+);
 
 export {};
