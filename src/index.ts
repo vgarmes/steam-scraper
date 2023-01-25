@@ -30,36 +30,37 @@ const SPECIAL_SELECTORS = {
   yearsOfService: '.badge_icon',
 };
 
-function getYearsOfService() {
+function getYearsOfService($: cheerio.CheerioAPI) {
   const badgeSrc = $(SPECIAL_SELECTORS.yearsOfService).attr('src');
   const regex = /(?:steamyears)([0-9]+)/;
   const match = badgeSrc.match(regex);
   return match ? Number(badgeSrc.match(regex)[1]) : null;
 }
 
-function getAvatar() {
+function getAvatar($: cheerio.CheerioAPI) {
   return $(SPECIAL_SELECTORS.avatar).attr('src');
 }
 
-const userSelectorEntries = Object.entries(SELECTORS);
+async function getUserInfo() {
+  const userSelectorEntries = Object.entries(SELECTORS);
 
-const $ = await scrape(getUserUrl('vgmestre'));
+  const $ = await scrape(getUserUrl('vgmestre'));
 
-console.log('scraping..');
+  console.log('scraping..');
 
-const entries = userSelectorEntries.map(([key, { selector, type }]) => {
-  const rawValue = $(selector).text();
-  const value = type === 'number' ? Number(rawValue) : rawValue;
+  const entries = userSelectorEntries.map(([key, { selector, type }]) => {
+    const rawValue = $(selector).text();
+    const value = type === 'number' ? Number(rawValue) : rawValue;
 
-  return [key, value];
-});
+    return [key, value];
+  });
 
-console.log(
-  Object.fromEntries([
+  return Object.fromEntries([
     ...entries,
-    ['yearsOfService', getYearsOfService()],
-    ['avatar', getAvatar()],
-  ])
-);
+    ['yearsOfService', getYearsOfService($)],
+    ['avatar', getAvatar($)],
+  ]);
+}
 
-export {};
+const userInfo = await getUserInfo();
+console.log(userInfo);
