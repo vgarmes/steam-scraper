@@ -60,4 +60,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           workingDirectory: src/api
-          command: publish --env production
+          command: publish
