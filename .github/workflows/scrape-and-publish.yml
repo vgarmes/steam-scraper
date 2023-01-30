@@ -25,6 +25,10 @@ jobs:
       - run: |
           pnpm run build
           pnpm run scrape
+      - uses: actions/upload-artifact@v3
+        with:
+          name: scraped-data
+          path: src/db
 
   deploy:
     needs: build
@@ -41,6 +45,9 @@ jobs:
         with:
           version: 7.18.2
           run_install: true
+      - uses: actions/download-artifact@v3
+        with:
+          name: scraped-data
       - uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
