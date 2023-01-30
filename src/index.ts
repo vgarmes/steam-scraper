@@ -56,10 +56,12 @@ export async function getUserInfo(username: string) {
     return [key, value];
   });
 
+  const datetime = new Date(Date.now());
   return Object.fromEntries([
     ...entries,
     ['yearsOfService', getYearsOfService($)],
     ['avatar', getAvatar($)],
+    ['createdAt', datetime.toISOString()],
   ]);
 }
 
