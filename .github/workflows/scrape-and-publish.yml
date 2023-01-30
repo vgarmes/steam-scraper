@@ -23,7 +23,12 @@ jobs:
         with:
           version: 7.18.2
           run_install: true
-      - run: |
+      - name: create env file
+        run: |
+          touch .env
+          echo USERNAME=${{ secrets.USERNAME }} >> .env
+      - name: build and run scraper
+        run: |
           pnpm run build
           pnpm run scrape
       - uses: actions/upload-artifact@v3
