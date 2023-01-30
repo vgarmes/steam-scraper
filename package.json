@@ -8,7 +8,8 @@
     "start": "node --watch dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
-    "lint": "eslint . --ext .ts,.js"
+    "lint": "eslint . --ext .ts,.js",
+    "scrape": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,12 +17,14 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230115.0",
     "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.48.2",
     "eslint": "^8.32.0",
     "typescript": "^4.9.4",
     "wrangler": "2.8.1"
   },
   "dependencies": {
-    "cheerio": "1.0.0-rc.12"
+    "cheerio": "1.0.0-rc.12",
+    "dotenv": "^16.0.3"
   }
 }

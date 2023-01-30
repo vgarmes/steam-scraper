@@ -1,4 +1,7 @@
 import * as cheerio from 'cheerio';
+import * as dotenv from 'dotenv';
+import { writeJSON } from './util/write-json.js';
+import { cleanText } from './util/scraping.js';
 
 const BASE_URL = 'https://steamcommunity.com/';
 
@@ -33,7 +36,7 @@ const SPECIAL_SELECTORS = {
 function getYearsOfService($: cheerio.CheerioAPI) {
   const badgeSrc = $(SPECIAL_SELECTORS.yearsOfService).attr('src');
   const regex = /(?:steamyears)([0-9]+)/;
-  const match = badgeSrc.match(regex);
+  const match = badgeSrc?.match(regex);
   return match ? Number(badgeSrc.match(regex)[1]) : null;
 }
 
@@ -41,17 +44,15 @@ function getAvatar($: cheerio.CheerioAPI) {
   return $(SPECIAL_SELECTORS.avatar).attr('src');
 }
 
-async function getUserInfo() {
+export async function getUserInfo(username: string) {
   const userSelectorEntries = Object.entries(SELECTORS);
 
-  const $ = await scrape(getUserUrl('vgmestre'));
-
-  console.log('scraping..');
+  const $ = await scrape(getUserUrl(username));
 
   const entries = userSelectorEntries.map(([key, { selector, type }]) => {
     const rawValue = $(selector).text();
-    const value = type === 'number' ? Number(rawValue) : rawValue;
-
+    const cleanValue = cleanText(rawValue);
+    const value = type === 'number' ? Number(cleanValue) : cleanValue;
     return [key, value];
   });
 
@@ -62,5 +63,9 @@ async function getUserInfo() {
   ]);
 }
 
-const userInfo = await getUserInfo();
+dotenv.config();
+
+console.log(`Scraping data for username: ${process.env.USERNAME}`);
+const userInfo = await getUserInfo(process.env.USERNAME);
+writeJSON('profile', userInfo);
 console.log(userInfo);

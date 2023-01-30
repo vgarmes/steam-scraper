@@ -6,7 +6,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "skipLibCheck": true, // due to cheerio's type definitions, to be fixed in 1.0.0
-    "types": ["@cloudflare/workers-types"]
+    "types": ["@cloudflare/workers-types"],
+    "resolveJsonModule": true,
+    "rootDir": "./src"
   },
-  "include": ["src/**/*"]
+  "exclude": ["src/api/*"]
 }
