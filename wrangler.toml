@@ -1,6 +1,3 @@
 name = "scraper"
 compatibility_date = "2023-01-25"
 main = "src/api/index.ts"
-
-[env.production]
-vars = { ENVIRONMENT = "production" }
