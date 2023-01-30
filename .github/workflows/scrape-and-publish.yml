@@ -28,7 +28,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: scraped-data
-          path: src/db
+          path: db
 
   deploy:
     needs: build
