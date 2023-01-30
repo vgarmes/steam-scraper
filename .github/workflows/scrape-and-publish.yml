@@ -25,7 +25,7 @@ jobs:
       - name: create env file
         run: |
           touch .env
-          echo USERNAME=${{ env.USERNAME }} >> .env
+          echo USERNAME=${{ vars.USERNAME }} >> .env
       - name: build and run scraper
         run: |
           pnpm install --frozen-lockfile
