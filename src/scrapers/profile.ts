@@ -21,6 +21,7 @@ const SELECTORS: {
 const SPECIAL_SELECTORS = {
   avatar: '.playerAvatarAutoSizeInner > img',
   yearsOfService: '.badge_icon',
+  recentGames: '.recent_game',
 };
 
 function getYearsOfService($: CheerioAPI) {
@@ -32,6 +33,46 @@ function getYearsOfService($: CheerioAPI) {
 
 function getAvatar($: CheerioAPI) {
   return $(SPECIAL_SELECTORS.avatar).attr('src');
+}
+
+function getRecentGames($: CheerioAPI) {
+  return $(SPECIAL_SELECTORS.recentGames)
+    .map((_index, el) => {
+      const game = $(el);
+      const linkElement = game.find('.game_name > a');
+      const title = linkElement.text();
+      const link = linkElement.attr('href');
+      const details = game.find('.game_info_details').html().split('<br>');
+      const imgSrc = game.find('.game_capsule').attr('src');
+      return {
+        title,
+        link,
+        playtime: cleanText(details[0]),
+        lastPlayed: cleanText(details[1]),
+        imgSrc,
+      };
+    })
+    .toArray();
+}
+
+function getStatsEntries($: CheerioAPI) {
+  const statNames = [
+    'badges',
+    'games',
+    'inventory',
+    'reviews',
+    'groups',
+    'friends',
+  ];
+
+  const stats = [];
+  $('.profile_count_link').each((index, el) => {
+    stats.push([
+      statNames[index],
+      Number(cleanText($(el).find('.profile_count_link_total').text() || '0')),
+    ]);
+  });
+  return stats;
 }
 
 export async function getProfile($: CheerioAPI) {
@@ -47,8 +88,10 @@ export async function getProfile($: CheerioAPI) {
   const datetime = new Date(Date.now());
   return Object.fromEntries([
     ...entries,
+    ...getStatsEntries($),
     ['yearsOfService', getYearsOfService($)],
     ['avatar', getAvatar($)],
+    ['recentGames', getRecentGames($)],
     ['createdAt', datetime.toISOString()],
   ]);
 }

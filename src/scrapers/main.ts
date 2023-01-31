@@ -31,7 +31,7 @@ async function scrape(url: string) {
 
 export async function scrapeAndSave(name: ScraperKey) {
   const start = performance.now();
-  console.log(SCRAPER_CONFIG);
+
   try {
     const { scraper, url } = SCRAPER_CONFIG[name];
 
