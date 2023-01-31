@@ -1,9 +1,12 @@
 import * as cheerio from 'cheerio';
+import * as dotenv from 'dotenv';
 import { getProfile } from './profile.js';
 import { logError, logInfo, logSuccess } from '../util/log.js';
 import { DB_PATH, writeJSON } from '../util/write-json.js';
 
-const BASE_URL = 'https://steamcommunity.com/';
+dotenv.config();
+
+const BASE_URL = 'https://steamcommunity.com';
 
 export const SCRAPERS = ['profile'] as const;
 export type ScraperKey = typeof SCRAPERS[number];
@@ -28,7 +31,7 @@ async function scrape(url: string) {
 
 export async function scrapeAndSave(name: ScraperKey) {
   const start = performance.now();
-
+  console.log(SCRAPER_CONFIG);
   try {
     const { scraper, url } = SCRAPER_CONFIG[name];
 

@@ -12,6 +12,10 @@ const SELECTORS: {
     selector: '.persona_level .friendPlayerLevelNum',
     type: 'number',
   },
+  recentPlaytime: {
+    selector: '.recentgame_recentplaytime > h2',
+    type: 'string',
+  },
 };
 
 const SPECIAL_SELECTORS = {

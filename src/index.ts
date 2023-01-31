@@ -1,8 +1,5 @@
-import * as dotenv from 'dotenv';
 import { scrapeAndSave, ScraperKey, SCRAPERS } from './scrapers/main.js';
 import { logInfo } from './util/log.js';
-
-dotenv.config();
 
 const scraper = process.argv.at(-1);
 
