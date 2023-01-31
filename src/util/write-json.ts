@@ -1,7 +1,7 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const DB_PATH = path.join(process.cwd(), './db/');
+export const DB_PATH = path.join(process.cwd(), './db/');
 
 export async function writeJSON(filename, data) {
   return mkdir(DB_PATH, { recursive: true })
