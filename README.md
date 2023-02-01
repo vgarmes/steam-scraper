@@ -2,6 +2,8 @@
 
 A scraper for your Steam profile integrated with an API deployed to a Cloudflare worker for a 🚀 blazing fast response.
 
+Based on [a similar project by midudev](https://github.com/midudev/kings-league-project/)
+
 ## Prerequisites:
 
 - Node.js v18 and pnpm installed
