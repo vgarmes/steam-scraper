@@ -1,4 +1,4 @@
-# steam-scraper
+# My Steam
 
 A scraper for your Steam profile integrated with an API deployed to a Cloudflare worker for a 🚀 blazing fast response.
 
