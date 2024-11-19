@@ -3,7 +3,7 @@ import { logInfo } from './util/log.js';
 
 const scraper = process.argv.at(-1);
 
-if (scraper in SCRAPERS) {
+if (scraper && scraper in SCRAPERS) {
   await scrapeAndSave(scraper as ScraperKey);
 } else {
   logInfo('Scraping all data...');
